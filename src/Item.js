@@ -28,33 +28,28 @@ const styles = {
 class Item extends Component {
 	render() {
 		const {
+			id,
+			body,
 			classes,
-			type
+			type,
+			onEditClick,
 		} = this.props;
 		return (
-			<div className="col-6">
-				<Card className={classes.card}>
-					<CardContent>
-						<Typography className={classes.title} color="textSecondary">
-						Word of the Day
-						</Typography>
-						<Typography variant="headline" component="h2">
-						headline
-						</Typography>
-						<Typography className={classes.pos} color="textSecondary">
-						adjective
-						</Typography>
-						<Typography component="p">
-						well meaning and kindly.
-						<br />
-						{'"a benevolent smile"'}
-						</Typography>
-					</CardContent>
-					<CardActions>
-						<Button size="small">Learn More</Button>
-					</CardActions>
-				</Card>
-			</div>
+			<Card className={classes.card}>
+				<CardContent>
+					<Typography component="p">
+						{ body }
+					</Typography>
+				</CardContent>
+				<CardActions>
+					<Button
+						size="small"
+						onClick={() => onEditClick(id)}
+					>
+						Edit
+					</Button>
+				</CardActions>
+			</Card>
 		);
 	}
 }
