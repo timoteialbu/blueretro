@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
+import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import uuidv4 from 'uuid/v4';
 import './App.css';
@@ -12,6 +15,16 @@ const NewItem = (type) => ({
   body: 'Please enter something',
 })
 
+const styles = theme => ({
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+  },
+});
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +35,10 @@ class App extends Component {
       selected: null,
     }
   }
+
+  handleClose = () => {
+    this.setState({ selected: null });
+  };
 
   onClickGood = (event) => {
     let newGoodItems = [ ...this.state.goodItems, NewItem('good') ];
@@ -37,13 +54,65 @@ class App extends Component {
     })
   }
 
-  onEditClick = (selected) => {
+  onCancel = () => {
+    this.setState({ selected: null });
+  }
+
+  onEdit = (selected) => {
     this.setState({ selected })
   }
 
+  onSave = (selected) => {
+    switch (selected.type) {
+      case "good":
+        let newGoodItems = _.map(this.state.goodItems, (item) => {
+          if (item.id === selected.id)
+          {
+            return selected;
+          }
+
+          return item;
+        });
+
+        this.setState({
+          goodItems: newGoodItems,
+          selected: null
+        });
+        break;
+      case "bad":
+        let newBadItems = _.map(this.state.badItems, (item) => {
+          if (item.id === selected.id)
+          {
+            return selected;
+          }
+
+          return item;
+        });
+
+        this.setState({
+          badItems: newBadItems,
+          selected: null
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
-    let onEditClick = this.onEditClick;
-    const { goodItems, badItems } = this.state;
+    const { classes } = this.props;
+    const { goodItems, badItems, selected } = this.state;
+
+    let onCancel = this.onCancel;
+    let onEdit = this.onEdit;
+    let onSave = this.onSave;
+
+    if (selected != null) {
+      return (
+        <Item data={selected} onCancel={onCancel} onSave={onSave}/>
+      );
+    }
+
     return (
       <div>
         <header>
@@ -51,7 +120,7 @@ class App extends Component {
         </header>
         <div className="row">
           <div className="col-6">
-            <Button 
+            <Button
               variant="contained"
               color="primary"
               onClick={this.onClickGood}
@@ -80,7 +149,7 @@ class App extends Component {
                   style={{ transformOrigin: '0 0 0' }}
                 >
                   <div className="row" >
-                      <Item { ...o } onEditClick={onEditClick}/>
+                      <Item data={o} onEdit={onEdit}/>
                   </div>
                 </Grow>
               );
@@ -96,7 +165,7 @@ class App extends Component {
                   style={{ transformOrigin: '0 0 0' }}
                 >
                   <div key={i} className="row">
-                    <Item { ...o } onEditClick={onEditClick}/>
+                    <Item data={o} onEdit={onEdit}/>
                   </div>
                 </Grow>
               );
@@ -108,4 +177,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);

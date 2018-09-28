@@ -6,10 +6,16 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import 'react-quill/dist/quill.bubble.css';
+import ReactQuill from 'react-quill';
 
 const styles = {
 	card: {
-		minWidth: 275,
+		minWidth: '450px',
+		width: '100%',
+    width: '-moz-available;',         /* WebKit-based browsers will ignore this. */
+    width: '-webkit-fill-available',  /* Mozilla-based browsers will ignore this. */
+    width: 'fill-available',
 	},
 	bullet: {
 		display: 'inline-block',
@@ -26,28 +32,49 @@ const styles = {
 };
 
 class Item extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			data: props.data,
+		}
+	}
+
+	handleChange(value) {
+		const data = this.state.data;
+    this.setState({ data: { ...data, body: value} });
+	}
+
 	render() {
 		const {
-			id,
-			body,
 			classes,
-			type,
-			onEditClick,
+			onCancel,
+			onEdit,
+			onSave,
+			data,
 		} = this.props;
+
+		const {
+			body,
+			id,
+			type,
+		} = this.state.data;
+
+		let onCancelButton = <Button key={1}	size="small"	onClick={() => onCancel()}>Cancel</Button>;
+		let onEditButton = <Button key={2}	size="small"	onClick={() => onEdit(data)}>Edit</Button>;
+		let onSaveButton = <Button key={3}	size="small"	onClick={() => onSave(this.state.data)}>Save</Button>;
+
 		return (
 			<Card className={classes.card}>
 				<CardContent>
-					<Typography component="p">
-						{ body }
-					</Typography>
+					<ReactQuill
+						theme="bubble"
+						value={body}
+						onChange={(event) => this.handleChange(event)}
+					/>
 				</CardContent>
 				<CardActions>
-					<Button
-						size="small"
-						onClick={() => onEditClick(id)}
-					>
-						Edit
-					</Button>
+					{ onEdit ? onEditButton : [onSaveButton, onCancelButton]}
 				</CardActions>
 			</Card>
 		);
@@ -55,7 +82,11 @@ class Item extends Component {
 }
 
 Item.propTypes = {
-	type: PropTypes.string.isRequired,
+	data: PropTypes.shape({
+		id: PropTypes.string.isRequired,
+		body: PropTypes.string.isRequired,
+		type: PropTypes.string.isRequired
+	}),
 	classes: PropTypes.object.isRequired,
 };
 
