@@ -85,7 +85,8 @@ Item.propTypes = {
 	data: PropTypes.shape({
 		id: PropTypes.string.isRequired,
 		body: PropTypes.string.isRequired,
-		type: PropTypes.string.isRequired
+		type: PropTypes.string.isRequired,
+		owner: PropTypes.string.isRequired,
 	}),
 	classes: PropTypes.object.isRequired,
 };

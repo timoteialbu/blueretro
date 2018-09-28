@@ -13,6 +13,7 @@ const NewItem = (type) => ({
   id: uuidv4(),
   type: type,
   body: 'Please enter something',
+  owner: 'timotei'
 })
 
 const styles = theme => ({
