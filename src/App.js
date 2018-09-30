@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-
+import { store } from "./store";
 import Login from './Login';
 import Body from './Body';
 import NotFound from "./NotFound";
@@ -17,8 +16,12 @@ class App extends Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path="/login" exact component={Login} />
-          <Route path="/" exact component={Body} />
+          <Route
+            path="/login" exact
+            render={(props) => <Login {...props} />} />
+          <Route
+            path="/" exact
+            render={(props) => <Body {...props} items={store.getState().goodItems} />} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
