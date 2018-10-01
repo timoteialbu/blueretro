@@ -70,7 +70,8 @@ class Item extends Component {
 		super(props);
 
 		this.state = {
-			text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nunc condimentum augue egestas accumsan. Aenean varius mi sodales, sollicitudin dui id, sodales tellus. Aenean aliquam arcu a tincidunt hendrerit. Praesent quis mi et urna ornare suscipit ac sit amet justo. Integer tristique sit amet mauris sed molestie. Ut suscipit vel ligula nec mollis. Donec suscipit est nibh, in placerat ligula luctus ac.'
+			text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nunc condimentum augue egestas accumsan. Aenean varius mi sodales, sollicitudin dui id, sodales tellus. Aenean aliquam arcu a tincidunt hendrerit. Praesent quis mi et urna ornare suscipit ac sit amet justo. Integer tristique sit amet mauris sed molestie. Ut suscipit vel ligula nec mollis. Donec suscipit est nibh, in placerat ligula luctus ac.',
+			open: false,
 		}
 	}
 
@@ -122,7 +123,7 @@ class Item extends Component {
 
   onEdit = (selected) => {
     this.setState({ selected })
-  }
+	}
 
 	render() {
 		const {
@@ -137,11 +138,9 @@ class Item extends Component {
 			upvotes,
 		} = data;
 
-		console.log(this.props.data);
-
-		let onCancelButton = <Button key={1}	size="small"	onClick={() => this.onCancel()}>Cancel</Button>;
-		let onEditButton = <Button key={2}	size="small"	onClick={() => this.onEdit(data)}>Edit</Button>;
-		let onSaveButton = <Button key={3}	size="small"	onClick={() => this.onSave(this.state.data)}>Save</Button>;
+		// let onCancelButton = <Button key={1}	size="small"	onClick={() => this.onCancel()}>Cancel</Button>;
+		// let onEditButton = <Button key={2}	size="small"	onClick={() => this.onEdit(data)}>Edit</Button>;
+		// let onSaveButton = <Button key={3}	size="small"	onClick={() => this.onSave(this.state.data)}>Save</Button>;
 
 		let color = upvotes.length > 0 ? "red" : "grey";
 
@@ -149,7 +148,7 @@ class Item extends Component {
 			<Card className={classes.card}>
 				<CardContent>
 					<div className={classes.row} style={{ justifyContent: 'left' }}>
-						<Avatar className={classes.avatar}>
+						<Avatar className={classes.avatar} onClick={() => this.props.recordVote(type)}>
 							{heart(color)}
 						</Avatar>
 						<ReactQuill

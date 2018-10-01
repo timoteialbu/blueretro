@@ -11,7 +11,8 @@ import Modal from '@material-ui/core/Modal';
 import ReactQuill from 'react-quill';
 import SaveIcon from '@material-ui/icons/Save';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
 import Item from './Item';
 
 function getModalStyle() {
@@ -94,6 +95,7 @@ class Body extends Component {
       items: props.items,
       selected: null,
       open: false,
+      openSnack: false,
     }
   }
 
@@ -128,6 +130,27 @@ class Body extends Component {
     });
   }
 
+  recordVote = (type) => {
+    if (type === 'good')
+    {
+      this.setState({
+        snackLocation: 'left',
+        openSnack: true
+      });
+    }
+    else
+    {
+      this.setState({
+        snackLocation: 'right',
+        openSnack: true
+      });
+    }
+	}
+
+  handleCloseSnack = () => {
+    this.setState({ openSnack: false });
+  };
+
   handleOpen = () => {
     this.setState({ open: true });
   };
@@ -144,7 +167,7 @@ class Body extends Component {
     const { items, selected } = this.state;
 
     let onEdit = this.onEdit;
-
+    let recordVote = this.recordVote;
     // if (selected != null) {
     //   return (
     //     <Item data={selected} onCancel={onCancel} onSave={onSave}/>
@@ -195,7 +218,7 @@ class Body extends Component {
                     style={{ transformOrigin: '0 0 0', margin: '10px' }}
                   >
                     <div className="row" style={{ margin: '10px' }}>
-                        <Item data={o} onEdit={onEdit}/>
+                        <Item data={o} onEdit={onEdit} recordVote={recordVote}/>
                     </div>
                   </Grow>
                 );
@@ -214,7 +237,7 @@ class Body extends Component {
                     style={{ transformOrigin: '0 0 0', margin: '10px' }}
                   >
                     <div key={i} style={{ margin: '10px' }}>
-                      <Item data={o} onEdit={onEdit}/>
+                      <Item data={o} onEdit={onEdit} recordVote={recordVote}/>
                     </div>
                   </Grow>
                 );
@@ -264,6 +287,15 @@ class Body extends Component {
             </div>
           </div>
         </Modal>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: this.state.snackLocation }}
+          open={this.state.openSnack}
+          onClose={this.handleCloseSnack}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Vote recorded ❣️</span>}
+        />
       </div>
     );
   }
