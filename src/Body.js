@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
-
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Grow from '@material-ui/core/Grow';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import uuidv4 from 'uuid/v4';
+import classNames from 'classnames';
 
 import Item from './Item';
 
@@ -24,6 +25,15 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
   },
+  row: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+  },
+  emoji: {
+    fontSize: '50px',
+    verticalAlign: 'middle',
+    lineHeight: 2
+  }
 });
 
 class Body extends Component {
@@ -53,51 +63,6 @@ class Body extends Component {
     // })
   }
 
-  onCancel = () => {
-    this.setState({ selected: null });
-  }
-
-  onEdit = (selected) => {
-    this.setState({ selected })
-  }
-
-  onSave = (selected) => {
-    switch (selected.type) {
-      case "good":
-        // let newGoodItems = _.map(this.state.goodItems, (item) => {
-        //   if (item.id === selected.id)
-        //   {
-        //     return selected;
-        //   }
-
-        //   return item;
-        // });
-
-        // this.setState({
-        //   goodItems: newGoodItems,
-        //   selected: null
-        // });
-        break;
-      case "bad":
-        // let newBadItems = _.map(this.state.badItems, (item) => {
-        //   if (item.id === selected.id)
-        //   {
-        //     return selected;
-        //   }
-
-        //   return item;
-        // });
-
-        // this.setState({
-        //   badItems: newBadItems,
-        //   selected: null
-        // });
-        break;
-      default:
-        break;
-    }
-  }
-
   render() {
     const { items, classes } = this.props;
     const { selected } = this.state;
@@ -112,34 +77,52 @@ class Body extends Component {
       );
     }
 
+    const orderedItems = _.orderBy(items, ['votes'],['desc']);
+
     return (
       <div>
         <header>
           <h1 className="App-title">Retrospective</h1>
         </header>
         <div className="row">
-          <div className="col-6">
+          <div className={classNames("col-6", classes.row)}>
             <Button
-              variant="contained"
-              color="primary"
+              variant="flat"
+              style={{ backgroundColor: 'transparent' }}
+              aria-label="Add Good"
+              lassName={classes.button}
               onClick={this.onClickGood}
             >
-              Add Good Item...
+              <span
+                className={classNames(classes.row, classes.emoji)}
+                role="img"
+                aria-label="Good"
+              >
+                👍
+              </span>
             </Button>
           </div>
-          <div className="col-6">
+          <div className={classNames("col-6", classes.row)}>
             <Button
-              variant="contained"
-              color="primary"
-              onClick={this.onClickBad}
+              variant="flat"
+              style={{ backgroundColor: 'transparent' }}
+              aria-label="Add Bad"
+              lassName={classes.button}
+              onClick={this.onClickGood}
             >
-              Add Bad Item...
+              <span
+                className={classNames(classes.row, classes.emoji)}
+                role="img"
+                aria-label="Bad"
+              >
+                👎
+              </span>
             </Button>
           </div>
         </div>
         <div className="row">
           <div className="col-6">
-            { _.map(items, (o, i) => {
+            { _.map(orderedItems, (o, i) => {
               if (o.type === 'good')
               {
                 return (
@@ -147,9 +130,9 @@ class Body extends Component {
                     key={i}
                     in={true}
                     timeout={1000}
-                    style={{ transformOrigin: '0 0 0' }}
+                    style={{ transformOrigin: '0 0 0', margin: '10px' }}
                   >
-                    <div className="row" >
+                    <div className="row" style={{ margin: '10px' }}>
                         <Item data={o} onEdit={onEdit}/>
                     </div>
                   </Grow>
@@ -158,7 +141,7 @@ class Body extends Component {
             })}
           </div>
           <div className="col-6">
-            { _.map(items, (o, i) => {
+            { _.map(orderedItems, (o, i) => {
               if (o.type === 'bad')
               {
                 return (
@@ -166,9 +149,9 @@ class Body extends Component {
                     key={i}
                     in={true}
                     timeout={1000}
-                    style={{ transformOrigin: '0 0 0' }}
+                    style={{ transformOrigin: '0 0 0', margin: '10px' }}
                   >
-                    <div key={i} className="row">
+                    <div key={i} style={{ margin: '10px' }}>
                       <Item data={o} onEdit={onEdit}/>
                     </div>
                   </Grow>
