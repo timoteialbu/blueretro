@@ -70,7 +70,7 @@ class Item extends Component {
 		super(props);
 
 		this.state = {
-			text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nisi purus, fermentum ultricies rhoncus vitae, consequat eu nunc. Nullam ut nunc condimentum augue egestas accumsan. Aenean varius mi sodales, sollicitudin dui id, sodales tellus. Aenean aliquam arcu a tincidunt hendrerit. Praesent quis mi et urna ornare suscipit ac sit amet justo. Integer tristique sit amet mauris sed molestie. Ut suscipit vel ligula nec mollis. Donec suscipit est nibh, in placerat ligula luctus ac. In porttitor eros ac neque feugiat, hendrerit sodales nulla vehicula. In scelerisque euismod eros, nec porttitor lectus viverra non.'
+			text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut nunc condimentum augue egestas accumsan. Aenean varius mi sodales, sollicitudin dui id, sodales tellus. Aenean aliquam arcu a tincidunt hendrerit. Praesent quis mi et urna ornare suscipit ac sit amet justo. Integer tristique sit amet mauris sed molestie. Ut suscipit vel ligula nec mollis. Donec suscipit est nibh, in placerat ligula luctus ac.'
 		}
 	}
 
@@ -166,9 +166,9 @@ class Item extends Component {
 						}
 					</div>
 				</CardContent>
-				<CardActions style={{ justifyContent: 'space-evenly' }}>
+				{/* <CardActions style={{ justifyContent: 'space-evenly' }}>
 					{ [onEditButton, onSaveButton, onCancelButton]}
-				</CardActions>
+				</CardActions> */}
 			</Card>
 		);
 	}

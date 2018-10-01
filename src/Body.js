@@ -7,14 +7,31 @@ import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import uuidv4 from 'uuid/v4';
 import classNames from 'classnames';
+import Modal from '@material-ui/core/Modal';
+import ReactQuill from 'react-quill';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import Item from './Item';
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 const NewItem = (type) => ({
   id: uuidv4(),
   type: type,
   body: 'Please enter something',
-  owner: 'timotei'
+  owner: 'timotei',
+  upvotes: [],
+  votes: 0,
 })
 
 const styles = theme => ({
@@ -33,15 +50,50 @@ const styles = theme => ({
     fontSize: '50px',
     verticalAlign: 'middle',
     lineHeight: 2
-  }
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 20,
+  },
 });
+
+const goodEmoji = (classes) => {
+  return (
+    <span
+      className={classNames(classes.row, classes.emoji)}
+      role="img"
+      aria-label="Good"
+    >
+      👍
+    </span>
+  )
+}
+
+const badEmoji = (classes) => {
+  return (
+    <span
+      className={classNames(classes.row, classes.emoji)}
+      role="img"
+      aria-label="Bad"
+    >
+      👎
+    </span>
+  )
+}
 
 class Body extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      items: props.items,
       selected: null,
+      open: false,
     }
   }
 
@@ -50,32 +102,54 @@ class Body extends Component {
   };
 
   onClickGood = (event) => {
-    // let newItems = [ ...this.state.goodItems, NewItem('good') ];
-    // this.setState({
-    //   goodItems: newGoodItems
-    // })
+    let selected = NewItem('good');
+    this.setState({
+      selected,
+      open: true,
+    })
   }
 
   onClickBad = (event) => {
-    // let newBadItems = [ ...this.state.badItems, NewItem('bad') ];
-    // this.setState({
-    //   badItems: newBadItems
-    // })
+    let selected = NewItem('bad');
+    this.setState({
+      selected,
+      open: true,
+    })
   }
 
+  onSave = (value, type) => {
+    let newItem = this.state.selected;
+    let oldItems = this.state.items;
+
+    this.setState({
+      items: [...oldItems, newItem],
+      selected: null,
+      open: false,
+    });
+  }
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+      selected: null,
+    });
+  };
+
   render() {
-    const { items, classes } = this.props;
-    const { selected } = this.state;
+    const { classes } = this.props;
+    const { items, selected } = this.state;
 
-    let onCancel = this.onCancel;
     let onEdit = this.onEdit;
-    let onSave = this.onSave;
 
-    if (selected != null) {
-      return (
-        <Item data={selected} onCancel={onCancel} onSave={onSave}/>
-      );
-    }
+    // if (selected != null) {
+    //   return (
+    //     <Item data={selected} onCancel={onCancel} onSave={onSave}/>
+    //   );
+    // }
 
     const orderedItems = _.orderBy(items, ['votes'],['desc']);
 
@@ -93,13 +167,7 @@ class Body extends Component {
               lassName={classes.button}
               onClick={this.onClickGood}
             >
-              <span
-                className={classNames(classes.row, classes.emoji)}
-                role="img"
-                aria-label="Good"
-              >
-                👍
-              </span>
+              {goodEmoji(classes)}
             </Button>
           </div>
           <div className={classNames("col-6", classes.row)}>
@@ -108,15 +176,9 @@ class Body extends Component {
               style={{ backgroundColor: 'transparent' }}
               aria-label="Add Bad"
               lassName={classes.button}
-              onClick={this.onClickGood}
+              onClick={this.onClickBad}
             >
-              <span
-                className={classNames(classes.row, classes.emoji)}
-                role="img"
-                aria-label="Bad"
-              >
-                👎
-              </span>
+              {badEmoji(classes)}
             </Button>
           </div>
         </div>
@@ -160,6 +222,48 @@ class Body extends Component {
             })}
           </div>
         </div>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <Typography variant="title" id="modal-title">
+              { selected ? selected.type === 'good' ? goodEmoji(classes) : badEmoji(classes) : null }
+            </Typography>
+            <Typography variant="subheading" id="simple-modal-description" style={{ backgroundColor: '#ECEFF1' }}>
+              <ReactQuill
+                value="Please say something..."
+                theme="bubble"
+              />
+            </Typography>
+            <div style={{ textAlign: 'center', marginTop: '25px' }}>
+              <Button
+                variant="contained"
+                color="secondary"
+                key={1}
+                size="small"
+                onClick={() => this.setState({ open: false, selected: null })}
+                style={{ marginRight: '10px' }}
+              >
+                <DeleteIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                key={2}
+                size="small"
+                onClick={() => this.onSave()}
+                style={{ marginLeft: '10px' }}
+              >
+                Save
+                <SaveIcon className={classNames(classes.rightIcon, classes.iconSmall)} />
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   }
