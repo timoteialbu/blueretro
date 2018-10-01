@@ -21,7 +21,7 @@ class App extends Component {
             render={(props) => <Login {...props} />} />
           <Route
             path="/" exact
-            render={(props) => <Body {...props} items={store.getState().goodItems} />} />
+            render={(props) => <Body {...props} items={store.getState().items} />} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>

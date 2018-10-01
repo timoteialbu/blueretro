@@ -31,8 +31,6 @@ class Body extends Component {
     super(props);
 
     this.state = {
-      goodItems: [{"id":"ce49f479-7593-4f66-b512-c6160ae1945f","type":"good","body":"Please enter something"},{"id":"d04f0fc6-2a6c-4973-ad73-c354d52f018f","type":"good","body":"Please enter something"},{"id":"b48ccc30-4d34-4ada-8b25-30ab4ff94a0c","type":"good","body":"Please enter something"},{"id":"c7ac12e4-bed5-47e4-b6aa-dfe559cf6902","type":"good","body":"Please enter something"},{"id":"3cc67729-0317-4206-b20c-757dfbfdfe12","type":"good","body":"Please enter something"},{"id":"395d712d-3050-4bac-a28b-25651dc815c0","type":"good","body":"Please enter something"}],
-      badItems:[],
       selected: null,
     }
   }
@@ -42,17 +40,17 @@ class Body extends Component {
   };
 
   onClickGood = (event) => {
-    let newGoodItems = [ ...this.state.goodItems, NewItem('good') ];
-    this.setState({
-      goodItems: newGoodItems
-    })
+    // let newItems = [ ...this.state.goodItems, NewItem('good') ];
+    // this.setState({
+    //   goodItems: newGoodItems
+    // })
   }
 
   onClickBad = (event) => {
-    let newBadItems = [ ...this.state.badItems, NewItem('bad') ];
-    this.setState({
-      badItems: newBadItems
-    })
+    // let newBadItems = [ ...this.state.badItems, NewItem('bad') ];
+    // this.setState({
+    //   badItems: newBadItems
+    // })
   }
 
   onCancel = () => {
@@ -66,34 +64,34 @@ class Body extends Component {
   onSave = (selected) => {
     switch (selected.type) {
       case "good":
-        let newGoodItems = _.map(this.state.goodItems, (item) => {
-          if (item.id === selected.id)
-          {
-            return selected;
-          }
+        // let newGoodItems = _.map(this.state.goodItems, (item) => {
+        //   if (item.id === selected.id)
+        //   {
+        //     return selected;
+        //   }
 
-          return item;
-        });
+        //   return item;
+        // });
 
-        this.setState({
-          goodItems: newGoodItems,
-          selected: null
-        });
+        // this.setState({
+        //   goodItems: newGoodItems,
+        //   selected: null
+        // });
         break;
       case "bad":
-        let newBadItems = _.map(this.state.badItems, (item) => {
-          if (item.id === selected.id)
-          {
-            return selected;
-          }
+        // let newBadItems = _.map(this.state.badItems, (item) => {
+        //   if (item.id === selected.id)
+        //   {
+        //     return selected;
+        //   }
 
-          return item;
-        });
+        //   return item;
+        // });
 
-        this.setState({
-          badItems: newBadItems,
-          selected: null
-        });
+        // this.setState({
+        //   badItems: newBadItems,
+        //   selected: null
+        // });
         break;
       default:
         break;
@@ -101,8 +99,8 @@ class Body extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { goodItems, badItems, selected } = this.state;
+    const { items, classes } = this.props;
+    const { selected } = this.state;
 
     let onCancel = this.onCancel;
     let onEdit = this.onEdit;
@@ -141,35 +139,41 @@ class Body extends Component {
         </div>
         <div className="row">
           <div className="col-6">
-            { _.map(goodItems, (o, i) => {
-              return (
-                <Grow
-                  key={i}
-                  in={true}
-                  timeout={1000}
-                  style={{ transformOrigin: '0 0 0' }}
-                >
-                  <div className="row" >
-                      <Item data={o} onEdit={onEdit}/>
-                  </div>
-                </Grow>
-              );
+            { _.map(items, (o, i) => {
+              if (o.type === 'good')
+              {
+                return (
+                  <Grow
+                    key={i}
+                    in={true}
+                    timeout={1000}
+                    style={{ transformOrigin: '0 0 0' }}
+                  >
+                    <div className="row" >
+                        <Item data={o} onEdit={onEdit}/>
+                    </div>
+                  </Grow>
+                );
+              }
             })}
           </div>
           <div className="col-6">
-            { _.map(badItems, (o, i) => {
-              return (
-                <Grow
-                  key={i}
-                  in={true}
-                  timeout={1000}
-                  style={{ transformOrigin: '0 0 0' }}
-                >
-                  <div key={i} className="row">
-                    <Item data={o} onEdit={onEdit}/>
-                  </div>
-                </Grow>
-              );
+            { _.map(items, (o, i) => {
+              if (o.type === 'bad')
+              {
+                return (
+                  <Grow
+                    key={i}
+                    in={true}
+                    timeout={1000}
+                    style={{ transformOrigin: '0 0 0' }}
+                  >
+                    <div key={i} className="row">
+                      <Item data={o} onEdit={onEdit}/>
+                    </div>
+                  </Grow>
+                );
+              }
             })}
           </div>
         </div>

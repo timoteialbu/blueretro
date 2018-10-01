@@ -13,6 +13,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import { Auth } from "aws-amplify";
+
 const styles = theme => ({
   layout: {
     width: 'auto',
@@ -46,6 +48,36 @@ const styles = theme => ({
 });
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: ""
+    };
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleSubmit = async event => {
+    event.preventDefault();
+
+    try {
+      await Auth.signIn(this.state.email, this.state.password);
+      alert("Logged in");
+    } catch (e) {
+      alert(e.message);
+    }
+  }
+
+  validateForm() {
+    return this.state.email.length > 0 && this.state.password.length > 0;
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -58,10 +90,16 @@ class Login extends Component {
               <LockIcon />
             </Avatar>
             <Typography variant="headline">Sign in</Typography>
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={this.handleSubmit}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus />
+                <Input
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  value={this.state.email}
+                  onChange={this.handleChange} />
               </FormControl>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -70,6 +108,8 @@ class Login extends Component {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
                 />
               </FormControl>
               <Button
@@ -78,6 +118,7 @@ class Login extends Component {
                 variant="raised"
                 color="primary"
                 className={classes.submit}
+                disabled={!this.validateForm()}
               >
                 Sign in
               </Button>

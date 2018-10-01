@@ -1,10 +1,6 @@
-export default (state, action) => {
-  switch (action.type) {
-		case "ADD_ITEM":
-			return; //return new state
-		case "UPDATE_ITEM":
-			return;  //return new state
-		default:
-		  return state;
-	}
-};
+import { combineReducers } from "redux";
+import item from './item';
+
+export default combineReducers({
+  items: item,
+});

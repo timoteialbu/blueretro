@@ -67,11 +67,12 @@ class Item extends Component {
 		return (
 			<Card className={classes.card}>
 				<CardContent>
-					<ReactQuill
+					{/* <ReactQuill
 						theme="bubble"
 						value={body}
-						onChange={(event) => this.handleChange(event)}
-					/>
+						onEditorChange={(value, delta, source, editor) => this.handleChange(editor.getContents())}
+					/> */}
+					{body}
 				</CardContent>
 				<CardActions>
 					{ onEdit ? onEditButton : [onSaveButton, onCancelButton]}

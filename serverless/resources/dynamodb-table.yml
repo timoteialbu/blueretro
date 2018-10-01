@@ -1,9 +1,9 @@
 Resources:
-  RetroTable:
+  BlueRetroTable:
     Type: AWS::DynamoDB::Table
     Properties:
       # Generate a name based on the stage
-      TableName: ${self:custom.stage}-retro
+      TableName: ${self:service}-${self:provider.stage}-retro
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
