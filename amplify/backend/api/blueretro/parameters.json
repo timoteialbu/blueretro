@@ -1,0 +1,9 @@
+{
+    "AppSyncApiName": "blueretro",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognitoa6982bd6",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

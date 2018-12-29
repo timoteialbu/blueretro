@@ -1,0 +1,19 @@
+{
+    "master": {
+        "awscloudformation": {
+            "AuthRoleName": "blueretro-20181228225833-authRole",
+            "UnauthRoleArn": "arn:aws:iam::707486724727:role/blueretro-20181228225833-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::707486724727:role/blueretro-20181228225833-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "blueretro-20181228225833-deployment",
+            "UnauthRoleName": "blueretro-20181228225833-unauthRole",
+            "StackName": "blueretro-20181228225833",
+            "StackId": "arn:aws:cloudformation:us-west-2:707486724727:stack/blueretro-20181228225833/c66b6940-0b2e-11e9-91ea-500c32c86c35"
+        },
+        "categories": {
+            "auth": {
+                "cognitoa6982bd6": {}
+            }
+        }
+    }
+}
