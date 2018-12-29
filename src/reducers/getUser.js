@@ -1,26 +1,26 @@
-export function getItems() {
+export function getItems () {
   return [
     {
-      "id":"zach",
-      "avatar": ""
+      'id': 'zach',
+      'avatar': ''
     },
     {
-      "id":"timotei",
-      "avatar": ""
-    },{
-      "id":"dave",
-      "avatar": ""
-    },{
-      "id":"ray",
-      "avatar": ""
+      'id': 'timotei',
+      'avatar': ''
+    }, {
+      'id': 'dave',
+      'avatar': ''
+    }, {
+      'id': 'ray',
+      'avatar': ''
     },
     {
-      "id":"ruben",
-      "avatar": ""
+      'id': 'ruben',
+      'avatar': ''
     },
     {
-      "id":"jon",
-      "avatar": ""
-    },
-  ];
+      'id': 'jon',
+      'avatar': ''
+    }
+  ]
 }

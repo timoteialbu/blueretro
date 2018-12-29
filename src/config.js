@@ -11,8 +11,8 @@ const aws = {
     region: 'us-west-2',
     userPoolId: 'us-west-2_9mFjGvgx7',
     identityPoolId: 'us-west-2:1bf6b6f6-0037-4cfa-a77c-be1fa4e697e1',
-    userPoolWebClientId: '74q6b9m1i7t6gct4har1fovr21',
-  },
-};
+    userPoolWebClientId: '74q6b9m1i7t6gct4har1fovr21'
+  }
+}
 
-export default aws;
+export default aws

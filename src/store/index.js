@@ -1,10 +1,10 @@
-import { createStore } from 'redux';
-import reducer from '../reducers';
-import { getItems } from '../reducers/getItems';
+import { createStore } from 'redux'
+import reducer from '../reducers'
+import { getItems } from '../reducers/getItems'
 
 const initialState = {
   items: getItems(),
-  selected: null,
-};
+  selected: null
+}
 
-export const store = createStore(reducer, initialState);
+export const store = createStore(reducer, initialState)

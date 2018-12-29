@@ -1,29 +1,27 @@
- import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Grow from '@material-ui/core/Grow';
-import Typography from '@material-ui/core/Typography';
-import _ from 'lodash';
-import uuidv4 from 'uuid/v4';
-import classNames from 'classnames';
-import Modal from '@material-ui/core/Modal';
-import ReactQuill from 'react-quill';
-import SaveIcon from '@material-ui/icons/Save';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
-import Item from './Item';
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Grow from '@material-ui/core/Grow'
+import Typography from '@material-ui/core/Typography'
+import _ from 'lodash'
+import uuidv4 from 'uuid/v4'
+import classNames from 'classnames'
+import Modal from '@material-ui/core/Modal'
+import ReactQuill from 'react-quill'
+import SaveIcon from '@material-ui/icons/Save'
+import DeleteIcon from '@material-ui/icons/Delete'
+import Snackbar from '@material-ui/core/Snackbar'
+import Item from './Item'
 
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
+function getModalStyle () {
+  const top = 50
+  const left = 50
 
   return {
     top: `${top}%`,
     left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
+    transform: `translate(-${top}%, -${left}%)`
+  }
 }
 
 const NewItem = (type) => ({
@@ -32,7 +30,7 @@ const NewItem = (type) => ({
   body: 'Please enter something',
   owner: 'timotei',
   upvotes: [],
-  votes: 0,
+  votes: 0
 })
 
 const styles = theme => ({
@@ -41,11 +39,11 @@ const styles = theme => ({
     width: theme.spacing.unit * 50,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing.unit * 4
   },
   row: {
     display: 'flex',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   emoji: {
     fontSize: '50px',
@@ -53,22 +51,22 @@ const styles = theme => ({
     lineHeight: 2
   },
   leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   },
   iconSmall: {
-    fontSize: 20,
-  },
-});
+    fontSize: 20
+  }
+})
 
 const goodEmoji = (classes) => {
   return (
     <span
       className={classNames(classes.row, classes.emoji)}
-      role="img"
-      aria-label="Good"
+      role='img'
+      aria-label='Good'
     >
       👍
     </span>
@@ -79,8 +77,8 @@ const badEmoji = (classes) => {
   return (
     <span
       className={classNames(classes.row, classes.emoji)}
-      role="img"
-      aria-label="Bad"
+      role='img'
+      aria-label='Bad'
     >
       👎
     </span>
@@ -88,116 +86,113 @@ const badEmoji = (classes) => {
 }
 
 class Body extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       items: props.items,
       selected: null,
       open: false,
-      openSnack: false,
+      openSnack: false
     }
   }
 
   handleClose = () => {
-    this.setState({ selected: null });
+    this.setState({ selected: null })
   };
 
   onClickGood = (event) => {
-    let selected = NewItem('good');
+    let selected = NewItem('good')
     this.setState({
       selected,
-      open: true,
+      open: true
     })
   }
 
   onClickBad = (event) => {
-    let selected = NewItem('bad');
+    let selected = NewItem('bad')
     this.setState({
       selected,
-      open: true,
+      open: true
     })
   }
 
   onSave = (value, type) => {
-    let newItem = this.state.selected;
-    let oldItems = this.state.items;
+    let newItem = this.state.selected
+    let oldItems = this.state.items
 
     this.setState({
       items: [...oldItems, newItem],
       selected: null,
-      open: false,
-    });
+      open: false
+    })
   }
 
   recordVote = (type) => {
-    if (type === 'good')
-    {
+    if (type === 'good') {
       this.setState({
         snackLocation: 'left',
         openSnack: true
-      });
-    }
-    else
-    {
+      })
+    } else {
       this.setState({
         snackLocation: 'right',
         openSnack: true
-      });
+      })
     }
-	}
+  }
 
   handleCloseSnack = () => {
-    this.setState({ openSnack: false });
+    this.setState({ openSnack: false })
   };
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true })
   };
 
   handleClose = () => {
     this.setState({
       open: false,
-      selected: null,
-    });
+      selected: null
+    })
   };
 
-  render() {
-    const { classes } = this.props;
-    const { items, selected } = this.state;
+  render () {
+    const { classes } = this.props
+    const { items, selected } = this.state
 
-    let onEdit = this.onEdit;
-    let recordVote = this.recordVote;
+    let onEdit = this.onEdit
+    let recordVote = this.recordVote
     // if (selected != null) {
     //   return (
     //     <Item data={selected} onCancel={onCancel} onSave={onSave}/>
     //   );
     // }
 
-    const orderedItems = _.orderBy(items, ['votes'],['desc']);
+    const orderedItems = _.orderBy(items, ['votes'], ['desc'])
 
     return (
       <div>
         <header>
-          <h1 className="App-title">Retrospective</h1>
+          <h1 className='App-title'>Retrospective</h1>
         </header>
-        <div className="row">
-          <div className={classNames("col-6", classes.row)}>
+        <div className='row'>
+          <div className={classNames('col-6', classes.row)}>
             <Button
-              variant="flat"
+              variant='flat'
               style={{ backgroundColor: 'transparent' }}
-              aria-label="Add Good"
+              aria-label='Add Good'
               lassName={classes.button}
               onClick={this.onClickGood}
             >
               {goodEmoji(classes)}
             </Button>
           </div>
-          <div className={classNames("col-6", classes.row)}>
+          <div className={classNames('col-6', classes.row)}>
             <Button
-              variant="flat"
+              variant='flat'
               style={{ backgroundColor: 'transparent' }}
-              aria-label="Add Bad"
+              aria-label='Add Bad'
               lassName={classes.button}
               onClick={this.onClickBad}
             >
@@ -205,68 +200,66 @@ class Body extends Component {
             </Button>
           </div>
         </div>
-        <div className="row">
-          <div className="col-6">
+        <div className='row'>
+          <div className='col-6'>
             { _.map(orderedItems, (o, i) => {
-              if (o.type === 'good')
-              {
+              if (o.type === 'good') {
                 return (
                   <Grow
                     key={i}
-                    in={true}
+                    in
                     timeout={1000}
                     style={{ transformOrigin: '0 0 0', margin: '10px' }}
                   >
-                    <div className="row" style={{ margin: '10px' }}>
-                        <Item data={o} onEdit={onEdit} recordVote={recordVote}/>
+                    <div className='row' style={{ margin: '10px' }}>
+                      <Item data={o} onEdit={onEdit} recordVote={recordVote} />
                     </div>
                   </Grow>
-                );
+                )
               }
             })}
           </div>
-          <div className="col-6">
+          <div className='col-6'>
             { _.map(orderedItems, (o, i) => {
-              if (o.type === 'bad')
-              {
+              if (o.type === 'bad') {
                 return (
                   <Grow
                     key={i}
-                    in={true}
+                    in
                     timeout={1000}
                     style={{ transformOrigin: '0 0 0', margin: '10px' }}
                   >
                     <div key={i} style={{ margin: '10px' }}>
-                      <Item data={o} onEdit={onEdit} recordVote={recordVote}/>
+                      <Item data={o} onEdit={onEdit} recordVote={recordVote} />
                     </div>
                   </Grow>
-                );
+                )
               }
             })}
           </div>
         </div>
         <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
+          aria-labelledby='simple-modal-title'
+          aria-describedby='simple-modal-description'
           open={this.state.open}
           onClose={this.handleClose}
         >
           <div style={getModalStyle()} className={classes.paper}>
-            <Typography variant="title" id="modal-title">
+            <Typography variant='title' id='modal-title'>
               { selected ? selected.type === 'good' ? goodEmoji(classes) : badEmoji(classes) : null }
             </Typography>
-            <Typography variant="subheading" id="simple-modal-description" style={{ backgroundColor: '#ECEFF1' }}>
+            <Typography variant='subheading' id='simple-modal-description' style={{ backgroundColor: '#ECEFF1' }}>
               <ReactQuill
-                value="Please say something..."
-                theme="bubble"
+                value='Please say something...'
+                theme='bubble'
               />
             </Typography>
             <div style={{ textAlign: 'center', marginTop: '25px' }}>
               <Button
-                variant="contained"
-                color="secondary"
+                variant='contained'
+                color='secondary'
                 key={1}
-                size="small"
+                size='small'
                 onClick={() => this.setState({ open: false, selected: null })}
                 style={{ marginRight: '10px' }}
               >
@@ -274,10 +267,10 @@ class Body extends Component {
                 Cancel
               </Button>
               <Button
-                variant="contained"
-                color="primary"
+                variant='contained'
+                color='primary'
                 key={2}
-                size="small"
+                size='small'
                 onClick={() => this.onSave()}
                 style={{ marginLeft: '10px' }}
               >
@@ -292,13 +285,13 @@ class Body extends Component {
           open={this.state.openSnack}
           onClose={this.handleCloseSnack}
           ContentProps={{
-            'aria-describedby': 'message-id',
+            'aria-describedby': 'message-id'
           }}
-          message={<span id="message-id">Vote recorded ❣️</span>}
+          message={<span id='message-id'>Vote recorded ❣️</span>}
         />
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(Body);
+export default withStyles(styles)(Body)

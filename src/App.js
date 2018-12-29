@@ -1,32 +1,32 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
-import { store } from "./store";
-import Login from './Login';
-import Body from './Body';
-import NotFound from "./NotFound";
+import React, { Component } from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
+import { store } from './store'
+import Login from './Login'
+import Body from './Body'
+import NotFound from './NotFound'
 
-import './App.css';
+import './App.css'
 
 const styles = theme => ({
-});
+})
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <BrowserRouter>
         <Switch>
           <Route
-            path="/login" exact
+            path='/login' exact
             render={(props) => <Login {...props} />} />
           <Route
-            path="/" exact
+            path='/' exact
             render={(props) => <Body {...props} items={store.getState().items} />} />
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(App)
