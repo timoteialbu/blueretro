@@ -9,7 +9,7 @@
     "aws-amplify": "^1.1.4",
     "babel-runtime": "6.26.0",
     "classnames": "^2.2.6",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.16",
     "object-assign": "4.1.1",
     "promise": "8.0.1",
     "prop-types": "^15.6.2",
